@@ -14,6 +14,7 @@
   --accent: #00ffe0;
   --secondary: #ff00c1;
 }
+
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
@@ -27,165 +28,421 @@ body {
   overflow: hidden;
 }
 
-/* (ALL YOUR UI EXACTLY SAME — not touching it) */
+/* --- SPLASH SCREEN --- */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #0f2027;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.8s ease-out;
+}
 
+.splash-logo {
+  font-size: clamp(2rem, 10vw, 4rem);
+  font-weight: bold;
+  letter-spacing: 10px;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 5px var(--accent); }
+  50% { opacity: 0.5; text-shadow: 0 0 25px var(--accent); }
+}
+
+/* --- MENUS --- */
 #modeSelect, #onlineBox, #gameArea {
   background: var(--glass);
   backdrop-filter: blur(15px);
   padding: 30px;
   border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
   text-align: center;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   width: 90%;
   max-width: 400px;
+  position: relative;
 }
 
-/* rest unchanged... */
+/* --- AUDIO TOGGLE --- */
+.audio-ctrl {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 4px 8px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.audio-ctrl:hover { background: rgba(0,255,224,0.2); }
+
+/* --- BINGO LETTERS --- */
+.bingo-header {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.letter {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.4s;
+}
+
+.letter.active {
+  background: var(--secondary);
+  color: white;
+  box-shadow: 0 0 15px var(--secondary);
+  transform: translateY(-5px);
+}
+
+/* --- GRID --- */
+#grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.cell {
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.5);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.cell:hover:not(.marked) {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.cell.marked {
+  background: var(--accent);
+  color: black;
+  font-weight: 800;
+  box-shadow: 0 0 15px var(--accent);
+}
+
+/* --- BUTTONS & INPUTS --- */
+button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 30px;
+  border: none;
+  background: var(--accent);
+  color: black;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  text-transform: uppercase;
+}
+
+button:hover {
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px var(--accent);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+#status {
+  margin: 15px 0;
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+footer {
+  position: absolute;
+  bottom: 20px;
+  font-size: 0.7rem;
+  opacity: 0.6;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* --- MODAL FOR WIN/LOSE --- */
+#winModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+#winMessage {
+  font-size: 2.5rem;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent);
+  margin-bottom: 20px;
+  font-weight: 800;
+}
 </style>
 </head>
 
 <body>
 
-<div id="modeSelect">
-  <button onclick="uiAction('startOffline')">Offline</button>
-  <button onclick="uiAction('showOnline')">Online</button>
+<div id="splash">
+  <div class="splash-logo">BINGO</div>
+  <p style="margin-top: 15px; letter-spacing: 5px; font-size: 0.8rem;">V-TOHNNA PRODUCT</p>
+</div>
+
+<div id="modeSelect" style="display:none;">
+  <h2 style="color:var(--accent); margin-bottom: 25px;">CHOOSE MODE</h2>
+  <button onclick="uiAction('startOffline')">Offline Play</button>
+  <button onclick="uiAction('showOnline')">Online Battle</button>
 </div>
 
 <div id="onlineBox" style="display:none;">
-  <input id="gameCode" placeholder="ENTER CODE">
-  <button onclick="uiAction('createRoom')">CREATE ROOM</button>
+  <h3 style="color:var(--secondary)">MULTIPLAYER</h3>
+  <button onclick="uiAction('createGame')">CREATE ROOM</button>
+  <div style="margin: 15px 0; opacity: 0.5; font-size: 0.8rem;">— OR —</div>
+  <input id="gameCode" placeholder="ENTER ROOM CODE">
   <button onclick="uiAction('joinGame')">JOIN ROOM</button>
+  <button onclick="uiAction('goBack')" style="background:none; color:white; border:1px solid white;">CANCEL</button>
 </div>
 
 <div id="gameArea" style="display:none;">
+  <div class="audio-ctrl" id="musicToggle" onclick="toggleMusic()">MUSIC: ON</div>
+  <div class="bingo-header" style="margin-top: 20px;">
+    <div class="letter" id="L0">B</div>
+    <div class="letter" id="L1">I</div>
+    <div class="letter" id="L2">N</div>
+    <div class="letter" id="L3">G</div>
+    <div class="letter" id="L4">O</div>
+  </div>
+  
   <div id="grid"></div>
-  <div id="status"></div>
+  
+  <div id="status">Complete 5 lines!</div>
+  
+  <button onclick="uiAction('resetGame')" style="background:var(--secondary); color:white;">New Game</button>
+  <button onclick="uiAction('goBack')" style="background:none; color:rgba(255,255,255,0.5); font-size:0.7rem;">EXIT TO MENU</button>
 </div>
+
+<div id="winModal">
+    <div id="winMessage">WINNER!</div>
+    <button onclick="closeWinModal()" style="width: 200px;">BACK TO GAME</button>
+</div>
+
+<footer>
+  A <span style="color:var(--secondary)">V-TOHNNA</span> PREMIUM PRODUCT <br>
+  &copy; 2026 DIGITAL ENTERTAINMENT
+</footer>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-const firebaseConfig = {
-  databaseURL: "https://bingo-b12e0-default-rtdb.firebaseio.com"
+// --- AUDIO CONFIG ---
+const sfx = {
+  click: new Audio(''),
+  mark: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
+  win: new Audio('https://assets.mixkit.co/active_storage/sfx/2020/2020-preview.mp3'),
+  bgm: new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3')
 };
+
+sfx.bgm.loop = true;
+sfx.bgm.volume = 0.2;
+
+let isMusicPlaying = false;
+
+function safePlay(audio) {
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+}
+
+function playSfx(key) {
+  if (sfx[key]) safePlay(sfx[key]);
+}
+
+function toggleMusic() {
+  if (isMusicPlaying) {
+    sfx.bgm.pause();
+    isMusicPlaying = false;
+    document.getElementById("musicToggle").innerText = "MUSIC: OFF";
+  } else {
+    sfx.bgm.play().catch(() => {});
+    isMusicPlaying = true;
+    document.getElementById("musicToggle").innerText = "MUSIC: ON";
+  }
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) sfx.bgm.pause();
+  else if (isMusicPlaying) sfx.bgm.play().catch(()=>{});
+});
+
+window.onblur = () => sfx.bgm.pause();
+window.onfocus = () => {
+  if (isMusicPlaying) sfx.bgm.play().catch(()=>{});
+};
+
+function uiAction(fnName) {
+  playSfx('click');
+  if (!isMusicPlaying && fnName !== 'goBack') {
+    sfx.bgm.play().catch(() => {});
+    isMusicPlaying = true;
+  }
+  window[fnName]();
+}
+
+// --- FIREBASE ---
+const firebaseConfig = {
+  apiKey: "AIzaSyCOBVgv_NzoWoziDpzt4PImu-3pRsjEyG0",
+  authDomain: "bingo-b12e0.firebaseapp.com",
+  databaseURL: "https://bingo-b12e0-default-rtdb.firebaseio.com",
+  projectId: "bingo-b12e0",
+  storageBucket: "bingo-b12e0.appspot.com",
+  messagingSenderId: "818810099645",
+  appId: "1:818810099645:web:7a7ac43074971484f1a4d4"
+};
+
 let db = firebase.initializeApp(firebaseConfig).database();
 
+// --- STATE ---
 let boardState = Array(25).fill(false);
-let roomRef=null, role="", roomCode="";
-let playerId = "p"+Math.floor(Math.random()*9999);
+let roomCode = "";
+let playerId = "p" + Math.floor(Math.random()*9999);
+let role = "";
+let currentTurn = "";
+let roomRef = null;
+let lastMarked = 0;
+let gameOver = false;
 
-// 🔥 NEW: ROOM CODE GENERATOR
-function generateRoomCode(length = 6) {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let code = "";
-  for (let i = 0; i < length; i++) {
-    code += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return code;
+// --- NAV ---
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("splash").style.opacity = "0";
+    setTimeout(() => {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("modeSelect").style.display = "block";
+    }, 800);
+  }, 2000);
+};
+
+window.onpopstate = () => {
+  if (roomRef) roomRef.off();
+  closeAll();
+  document.getElementById("modeSelect").style.display = "block";
+};
+
+function closeAll() {
+  document.getElementById("modeSelect").style.display = "none";
+  document.getElementById("onlineBox").style.display = "none";
+  document.getElementById("gameArea").style.display = "none";
+  document.getElementById("winModal").style.display = "none";
 }
 
-// 🔥 NEW: CREATE ROOM
-function createRoom() {
-  roomCode = generateRoomCode();
-  document.getElementById("gameCode").value = roomCode;
-  joinGame();
+function goBack() { 
+  if (roomRef) roomRef.off();
+  history.back(); 
 }
 
-function showOnline(){
-  document.getElementById("modeSelect").style.display="none";
-  document.getElementById("onlineBox").style.display="block";
-}
-
-function startOffline(){
-  document.getElementById("modeSelect").style.display="none";
-  document.getElementById("gameArea").style.display="block";
+// --- GAME ---
+function startOffline() {
+  history.pushState({p:1}, "");
+  closeAll();
+  document.getElementById("gameArea").style.display = "block";
+  document.getElementById("status").innerText = "OFFLINE MODE";
   initBoard();
 }
 
-function joinGame(){
-  roomCode=document.getElementById("gameCode").value.toUpperCase();
-  let ref=db.ref("rooms/"+roomCode);
-
-  ref.once("value",snap=>{
-    let d=snap.val();
-
-    if(!d){
-      role="p1";
-      ref.set({
-        players:{p1:playerId},
-        results:null
-      });
-    } else if(d.players && d.players.p2){
-      alert("Room Full"); return;
-    } else {
-      role="p2";
-      ref.update({"players/p2":playerId});
-    }
-
-    startOnlineSession(ref);
-  });
+function showOnline() {
+  history.pushState({p:2}, "");
+  closeAll();
+  document.getElementById("onlineBox").style.display = "block";
 }
 
-function startOnlineSession(ref){
-  roomRef=ref;
-  document.getElementById("onlineBox").style.display="none";
-  document.getElementById("gameArea").style.display="block";
-  initBoard();
-
-  ref.on("value",snap=>{
-    let d=snap.val();
-    if(!d) return;
-
-    if(d.lastNum) markNumber(d.lastNum);
-
-    // 🔥 NEW RESULT SYNC
-    if(d.results){
-      let me = d.results[role];
-      let opp = d.results[role==="p1"?"p2":"p1"];
-
-      if(me && opp) showResult("tie");
-      else if(me) showResult("win");
-      else if(opp) showResult("lose");
-    }
-  });
-}
-
-function initBoard(){
-  let grid=document.getElementById("grid");
-  grid.innerHTML="";
+function initBoard() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
   boardState.fill(false);
+  lastMarked = 0;
+  gameOver = false;
+  updateLetters(0);
+  grid.style.pointerEvents = "auto";
 
-  let nums=[...Array(25).keys()].map(x=>x+1).sort(()=>Math.random()-0.5);
+  let nums = [...Array(25).keys()].map(x => x+1);
+  nums.sort(()=>Math.random()-0.5);
 
   nums.forEach(num=>{
-    let cell=document.createElement("div");
-    cell.className="cell";
-    cell.innerText=num;
-    cell.onclick=()=>handleMove(num);
+    let cell = document.createElement("div");
+    cell.className = "cell";
+    cell.innerText = num;
+    cell.onclick = ()=>handleMove(num);
     grid.appendChild(cell);
   });
 }
 
-function handleMove(num){
-  if(roomRef){
-    roomRef.update({lastNum:num});
+function handleMove(num) {
+  if (gameOver) return;
+  if (roomRef) {
+    if (currentTurn !== role) return;
+
+    playSfx('mark');
+    let nextTurn = role === "p1" ? "p2" : "p1";
+
+    roomRef.update({
+      lastNum: num,
+      turn: nextTurn,
+      reset: false
+    });
   } else {
+    playSfx('mark');
     markNumber(num);
   }
 }
 
-function markNumber(num){
-  document.querySelectorAll(".cell").forEach((c,i)=>{
-    if(parseInt(c.innerText)===num){
-      c.classList.add("marked");
+function markNumber(num) {
+  let cells = document.querySelectorAll(".cell");
+  cells.forEach((cell,i)=>{
+    if(parseInt(cell.innerText)===num && !boardState[i]){
       boardState[i]=true;
+      cell.classList.add("marked");
     }
   });
   checkWin();
 }
 
-function checkWin(){
-  const wins=[
+function checkWin() {
+  const wins = [
     [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
     [15,16,17,18,19],[20,21,22,23,24],
     [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],
@@ -193,35 +450,139 @@ function checkWin(){
     [0,6,12,18,24],[4,8,12,16,20]
   ];
 
-  let lines=wins.filter(p=>p.every(i=>boardState[i])).length;
+  let lines = wins.filter(p=>p.every(i=>boardState[i])).length;
+  updateLetters(lines);
 
-  if(lines>=5){
-    if(roomRef){
-      roomRef.child("results/"+role).set(true);
-    } else {
-      showResult("win");
-    }
+  if (roomRef) {
+      roomRef.child("wins").update({ [role]: lines >= 5 });
+  } else if(lines>=5){
+    playSfx('win');
+    showWinModal("🏆 YOU WIN!");
+  } else {
+    document.getElementById("status").innerText = `LINES: ${lines}/5`;
   }
 }
 
-// 🔥 NEW RESULT DISPLAY
-function showResult(r){
-  document.getElementById("grid").style.pointerEvents="none";
+function showWinModal(msg) {
+    gameOver = true;
+    const modal = document.getElementById("winModal");
+    const msgEl = document.getElementById("winMessage");
+    msgEl.innerText = msg;
+    modal.style.display = "flex";
+    document.getElementById("grid").style.pointerEvents = "none";
+}
 
-  if(r==="win") document.getElementById("status").innerText="🏆 YOU WIN!";
-  else if(r==="lose") document.getElementById("status").innerText="💀 OPPONENT WINS!";
-  else document.getElementById("status").innerText="🤝 TIE!";
+function closeWinModal() {
+    document.getElementById("winModal").style.display = "none";
+}
+
+function updateLetters(count){
+  for(let i=0;i<5;i++){
+    document.getElementById("L"+i).classList.toggle("active", i<count);
+  }
+}
+
+// --- ONLINE LOGIC ---
+function createGame() {
+    roomCode = generateRandomCode();
+    document.getElementById("gameCode").value = roomCode;
+    alert("ROOM CREATED! SHARE CODE: " + roomCode);
+    joinGame();
+}
+
+function generateRandomCode() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    for(let i=0; i<6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+    return code;
+}
+
+function joinGame() {
+  roomCode = document.getElementById("gameCode")
+    .value.toUpperCase().replace(/[^A-Z0-9]/g,"");
+
+  if(!roomCode) { alert("Enter a code"); return; }
+
+  history.pushState({p:3}, "");
+  let ref = db.ref("rooms/"+roomCode);
+
+  ref.once("value", snap=>{
+    let data = snap.val();
+    if(!data){
+      role="p1";
+      let firstTurn = Math.random()<0.5 ? "p1" : "p2";
+      ref.set({
+        lastNum:0,
+        turn:firstTurn,
+        reset:false,
+        players:{p1:playerId},
+        wins:{p1:false, p2:false}
+      });
+    } else if(data.players && data.players.p2 && data.players.p1 !== playerId){
+      alert("Room Full");
+      return;
+    } else {
+      role = (data.players.p1 === playerId) ? "p1" : "p2";
+      if(role === "p2") ref.update({"players/p2":playerId});
+    }
+    startOnlineSession(ref);
+  });
+}
+
+function startOnlineSession(ref){
+  roomRef=ref;
+  closeAll();
+  document.getElementById("gameArea").style.display="block";
+  initBoard();
+
+  ref.on("value", snap=>{
+    let d = snap.val();
+    if(!d) return;
+
+    if(d.reset){
+      initBoard();
+      return;
+    }
+
+    if(d.lastNum && d.lastNum !== lastMarked){
+      lastMarked = d.lastNum;
+      markNumber(d.lastNum);
+    }
+
+    // Check for Win/Tie conditions
+    if(d.wins && !gameOver){
+        if(d.wins.p1 && d.wins.p2) {
+            playSfx('win');
+            showWinModal("IT'S A TIE!");
+        } else if(d.wins[role]) {
+            playSfx('win');
+            showWinModal("YOU WIN!");
+        } else if(d.wins[role === "p1" ? "p2" : "p1"]) {
+            showWinModal("OPPONENT WINS!");
+        }
+    }
+
+    if(!gameOver) {
+        currentTurn = d.turn;
+        document.getElementById("status").innerText = 
+            (currentTurn===role) ? "YOUR TURN" : "OPPONENT'S TURN";
+        document.getElementById("status").style.color = (currentTurn===role) ? "var(--accent)" : "#fff";
+    }
+  });
 }
 
 function resetGame(){
   if(roomRef){
     roomRef.update({
       lastNum:0,
-      results:null
+      reset:true,
+      turn:"p1",
+      wins:{p1:false, p2:false}
     });
-  } else initBoard();
+  } else {
+    initBoard();
+  }
 }
 </script>
-
 </body>
 </html>
