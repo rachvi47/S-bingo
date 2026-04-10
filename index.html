@@ -10,7 +10,7 @@
 <style>
 :root {
   --bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  --glass: rgba(255,255,255,0.1);
+  --glass: rgba(255,255,255,0.08);
   --accent: #00ffe0;
   --secondary: #ff00c1;
 }
@@ -42,34 +42,35 @@ body {
 }
 
 .splash-logo {
-  font-size: clamp(2rem, 10vw, 4rem);
-  font-weight: bold;
-  letter-spacing: 10px;
+  font-size: clamp(2.5rem, 12vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: 12px;
   color: var(--accent);
-  text-shadow: 0 0 20px var(--accent);
+  text-shadow: 0 0 25px var(--accent);
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; text-shadow: 0 0 5px var(--accent); }
-  50% { opacity: 0.5; text-shadow: 0 0 25px var(--accent); }
+  0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--accent); }
+  50% { opacity: 0.6; text-shadow: 0 0 35px var(--accent); }
 }
 
-/* --- UI PANELS --- */
+/* --- MENUS --- */
 #modeSelect, #onlineBox, #gameArea, #profileSetup {
   background: var(--glass);
-  backdrop-filter: blur(20px);
-  padding: 30px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(25px);
+  padding: 35px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.15);
   text-align: center;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
   position: relative;
+  transition: 0.4s ease;
 }
 
-/* --- AVATAR SELECT --- */
+/* --- AVATAR SYSTEM --- */
 .avatar-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -82,115 +83,125 @@ body {
   border-radius: 50%;
   border: 2px solid rgba(255,255,255,0.1);
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background: rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 .avatar-opt.selected {
   border-color: var(--accent);
-  box-shadow: 0 0 15px var(--accent);
-  transform: scale(1.15);
-  background: rgba(0,255,224,0.1);
+  box-shadow: 0 0 20px var(--accent);
+  transform: scale(1.18);
+  background: rgba(0,255,224,0.15);
 }
 
-/* --- MATCH HEADER --- */
+/* --- GAME HEADER & VS DISPLAY --- */
 .match-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px;
-  padding: 10px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 15px;
+  margin-bottom: 25px;
+  padding: 12px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 .player-tag {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
+  width: 42%;
 }
 .p-img {
-  width: 55px;
-  height: 55px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: var(--glass);
+  background: rgba(255,255,255,0.05);
   border: 2px solid var(--accent);
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  box-shadow: 0 0 10px rgba(0,255,224,0.2);
 }
-.p-name { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }
-.p-meter { font-size: 0.9rem; color: var(--secondary); font-weight: 800; letter-spacing: 2px; min-height: 1.2rem; }
+.p-name { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; color: #fff; }
+.p-meter { font-size: 1rem; color: var(--secondary); font-weight: 900; letter-spacing: 3px; min-height: 1.4rem; text-shadow: 0 0 8px var(--secondary); }
 
-/* --- BINGO UI --- */
-.bingo-header { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; }
+/* --- BINGO ELEMENTS --- */
+.bingo-header { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
 .letter {
-  width: 42px;
-  height: 42px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.3);
+  font-size: 1.3rem;
+  font-weight: 800;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.4s;
 }
 .letter.active {
   background: var(--secondary);
-  box-shadow: 0 0 15px var(--secondary);
-  transform: translateY(-3px);
+  color: white;
+  box-shadow: 0 0 20px var(--secondary);
+  transform: translateY(-5px);
 }
 
-#grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+#grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .cell {
   aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.4);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.5);
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
   border: 1px solid rgba(255,255,255,0.05);
   transition: 0.2s;
 }
-.cell.marked { background: var(--accent); color: black; font-weight: 800; box-shadow: 0 0 15px var(--accent); }
+.cell:hover:not(.marked) { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+.cell.marked { background: var(--accent); color: black; font-weight: 900; box-shadow: 0 0 20px var(--accent); border: none; }
 
-/* --- BUTTONS --- */
+/* --- INPUTS & BUTTONS --- */
+input {
+  width: 100%;
+  padding: 14px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
 button {
   width: 100%;
   margin-top: 15px;
-  padding: 14px;
-  border-radius: 30px;
+  padding: 15px;
+  border-radius: 35px;
   border: none;
   background: var(--accent);
   color: black;
   font-family: 'Orbitron', sans-serif;
-  font-weight: bold;
+  font-weight: 800;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
-button:hover { letter-spacing: 1px; box-shadow: 0 0 20px var(--accent); }
+button:hover { transform: translateY(-2px); box-shadow: 0 5px 25px var(--accent); }
 
-input {
-  width: 100%;
-  padding: 12px;
-  background: rgba(0,0,0,0.4);
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  box-sizing: border-box;
-}
-
+/* --- WIN MODAL --- */
 #winModal {
   display: none;
   position: fixed;
@@ -200,11 +211,10 @@ input {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
 }
-.winner-av { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--accent); margin-bottom: 20px; display:flex; align-items:center; justify-content:center; font-size: 4rem; background: var(--glass);}
+.winner-av { width: 130px; height: 130px; border-radius: 50%; border: 5px solid var(--accent); margin-bottom: 25px; display:flex; align-items:center; justify-content:center; font-size: 4.5rem; background: rgba(255,255,255,0.05); box-shadow: 0 0 30px var(--accent);}
 
-footer { position: fixed; bottom: 15px; font-size: 0.65rem; opacity: 0.5; letter-spacing: 2px; }
+footer { position: fixed; bottom: 20px; font-size: 0.7rem; opacity: 0.4; letter-spacing: 3px; }
 </style>
 </head>
 
@@ -212,38 +222,38 @@ footer { position: fixed; bottom: 15px; font-size: 0.65rem; opacity: 0.5; letter
 
 <div id="splash">
   <div class="splash-logo">BINGO</div>
-  <p style="margin-top: 15px; letter-spacing: 5px; font-size: 0.8rem;">V-TOHNNA PRODUCT</p>
+  <p style="margin-top: 15px; letter-spacing: 6px; font-size: 0.9rem; color: var(--secondary);">V-TOHNNA PRO</p>
 </div>
 
 <div id="profileSetup" style="display:none;">
-  <h3 style="color:var(--accent)">IDENTITY SETUP</h3>
-  <input id="userName" placeholder="ENTER NAME" maxlength="12">
-  <div class="avatar-grid">
-    <div class="avatar-opt selected" onclick="selectAvatar(this, '👤')">👤</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '🤖')">🤖</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '🐱')">🐱</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '👽')">👽</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '🔥')">🔥</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '💎')">💎</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '👻')">👻</div>
-    <div class="avatar-opt" onclick="selectAvatar(this, '👑')">👑</div>
+  <h3 style="color:var(--accent); letter-spacing: 2px;">SET PLAYER</h3>
+  <input id="userName" placeholder="ENTER YOUR NAME" maxlength="12">
+  <div class="avatar-grid" id="avatarPicker">
+    <div class="avatar-opt selected" onclick="pickAv(this, '👤')">👤</div>
+    <div class="avatar-opt" onclick="pickAv(this, '🤖')">🤖</div>
+    <div class="avatar-opt" onclick="pickAv(this, '🐱')">🐱</div>
+    <div class="avatar-opt" onclick="pickAv(this, '👽')">👽</div>
+    <div class="avatar-opt" onclick="pickAv(this, '🔥')">🔥</div>
+    <div class="avatar-opt" onclick="pickAv(this, '💎')">💎</div>
+    <div class="avatar-opt" onclick="pickAv(this, '👻')">👻</div>
+    <div class="avatar-opt" onclick="pickAv(this, '👑')">👑</div>
   </div>
-  <button onclick="saveProfile()">CONFIRM PROFILE</button>
+  <button onclick="saveProfile()">START ENGINE</button>
 </div>
 
 <div id="modeSelect" style="display:none;">
-  <h2 style="color:var(--accent); margin-bottom: 25px;">CHOOSE MODE</h2>
-  <button onclick="uiAction('startOffline')">Offline Play</button>
+  <h2 style="color:var(--accent); margin-bottom: 30px;">CHOOSE MODE</h2>
+  <button onclick="uiAction('startOffline')">Offline Practice</button>
   <button onclick="uiAction('showOnline')">Online Battle</button>
 </div>
 
 <div id="onlineBox" style="display:none;">
-  <h3 style="color:var(--secondary)">MULTIPLAYER</h3>
-  <button onclick="uiAction('createGame')">CREATE NEW ROOM</button>
-  <div style="margin: 15px 0; opacity: 0.5; font-size: 0.7rem;">— JOIN EXISTING —</div>
-  <input id="gameCode" placeholder="PASTE ROOM CODE">
+  <h3 style="color:var(--secondary); letter-spacing: 2px;">MULTIPLAYER</h3>
+  <button onclick="uiAction('createGame')">CREATE PRIVATE ROOM</button>
+  <div style="margin: 20px 0; opacity: 0.5; font-size: 0.7rem;">— OR —</div>
+  <input id="gameCode" placeholder="ENTER ROOM CODE">
   <button onclick="uiAction('joinGame')">JOIN ROOM</button>
-  <button onclick="uiAction('goBack')" style="background:none; color:white; border:1px solid white;">CANCEL</button>
+  <button onclick="uiAction('goBack')" style="background:none; color:white; border:1px solid white;">GO BACK</button>
 </div>
 
 <div id="gameArea" style="display:none;">
@@ -253,7 +263,7 @@ footer { position: fixed; bottom: 15px; font-size: 0.65rem; opacity: 0.5; letter
         <div class="p-name" id="myNameDisplay">YOU</div>
         <div class="p-meter" id="myMeter"></div>
     </div>
-    <div style="color:var(--accent); font-size: 0.8rem; font-weight:bold;">VS</div>
+    <div style="color:var(--accent); font-size: 0.9rem; font-weight:800; text-shadow: 0 0 10px var(--accent);">VS</div>
     <div class="player-tag">
         <div class="p-img" id="oppAvDisplay">?</div>
         <div class="p-name" id="oppNameDisplay">WAITING...</div>
@@ -266,17 +276,17 @@ footer { position: fixed; bottom: 15px; font-size: 0.65rem; opacity: 0.5; letter
   </div>
   
   <div id="grid"></div>
-  <div id="status" style="margin-top:15px; font-size: 0.8rem;">READY?</div>
+  <div id="status" style="margin-top:20px; font-weight: 600; color: var(--accent);">READY TO PLAY</div>
   
-  <button onclick="uiAction('resetGame')" style="background:var(--secondary); color:white;">Reset Match</button>
-  <button onclick="uiAction('goBack')" style="background:none; color:rgba(255,255,255,0.4); font-size:0.7rem; border: 1px solid rgba(255,255,255,0.2)">EXIT TO MENU</button>
+  <button onclick="uiAction('resetGame')" style="background:var(--secondary); color:white;">NEW MATCH</button>
+  <button onclick="uiAction('goBack')" style="background:none; color:rgba(255,255,255,0.4); font-size:0.7rem; margin-top: 10px;">EXIT GAME</button>
 </div>
 
 <div id="winModal">
     <div class="winner-av" id="winAv"></div>
-    <div id="winName" style="color:var(--accent); font-size: 1.5rem; margin-bottom: 5px;">PLAYER</div>
-    <div id="winMessage" style="font-size: 2.5rem; color:var(--secondary); font-weight:800; margin-bottom: 30px;">WINNER!</div>
-    <button onclick="closeWinModal()" style="width: 200px;">BACK TO GAME</button>
+    <div id="winName" style="color:var(--accent); font-size: 1.8rem; font-weight: 600; margin-bottom: 5px;">PLAYER</div>
+    <div id="winMessage" style="font-size: 3rem; color:var(--secondary); font-weight:900; text-shadow: 0 0 20px var(--secondary);">WINNER!</div>
+    <button onclick="closeWinModal()" style="width: 220px;">CONTINUE</button>
 </div>
 
 <footer>&copy; 2026 V-TOHNNA PREMIUM DIGITAL</footer>
@@ -285,7 +295,7 @@ footer { position: fixed; bottom: 15px; font-size: 0.65rem; opacity: 0.5; letter
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-// --- CONFIG & STATE ---
+// --- CORE SETUP ---
 const firebaseConfig = {
   apiKey: "AIzaSyCOBVgv_NzoWoziDpzt4PImu-3pRsjEyG0",
   authDomain: "bingo-b12e0.firebaseapp.com",
@@ -300,22 +310,29 @@ const db = app.database();
 
 let myName = "Player";
 let myAvatar = "👤";
-let playerId = "p" + Math.floor(Math.random()*99999);
+let playerId = "user_" + Math.random().toString(36).substr(2, 9);
 let roomCode = "";
 let roomRef = null;
 let role = "";
 let boardState = Array(25).fill(false);
 let gameOver = false;
-let lastNumSync = 0;
+let lastMoveProcessed = 0;
 
-// --- SFX ---
-const sfx = {
-  click: new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'),
-  win: new Audio('https://assets.mixkit.co/active_storage/sfx/2020/2020-preview.mp3')
-};
-function playSfx(k) { sfx[k].currentTime=0; sfx[k].play().catch(()=>{}); }
+// --- PROFILE ---
+function pickAv(el, icon) {
+    document.querySelectorAll('.avatar-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    myAvatar = icon;
+}
 
-// --- UI NAVIGATION ---
+function saveProfile() {
+    let input = document.getElementById("userName").value.trim();
+    if(input) myName = input;
+    document.getElementById("profileSetup").style.display = "none";
+    document.getElementById("modeSelect").style.display = "block";
+}
+
+// --- NAVIGATION ---
 window.onload = () => {
     setTimeout(() => {
         document.getElementById("splash").style.opacity = "0";
@@ -326,21 +343,7 @@ window.onload = () => {
     }, 2000);
 };
 
-function selectAvatar(el, icon) {
-    document.querySelectorAll('.avatar-opt').forEach(opt => opt.classList.remove('selected'));
-    el.classList.add('selected');
-    myAvatar = icon;
-}
-
-function saveProfile() {
-    let n = document.getElementById("userName").value.trim();
-    if(n) myName = n;
-    document.getElementById("profileSetup").style.display = "none";
-    document.getElementById("modeSelect").style.display = "block";
-    playSfx('click');
-}
-
-function uiAction(fn) { playSfx('click'); window[fn](); }
+function uiAction(fn) { window[fn](); }
 
 function goBack() {
     if(roomRef) roomRef.off();
@@ -348,14 +351,15 @@ function goBack() {
     document.getElementById("modeSelect").style.display = "block";
 }
 
-// --- GAME LOGIC ---
+// --- GAMEPLAY ---
 function initBoard() {
     const grid = document.getElementById("grid");
     grid.innerHTML = "";
     boardState.fill(false);
     gameOver = false;
-    lastNumSync = 0;
-    updateBingoLetters(0);
+    lastMoveProcessed = 0;
+    updateBingoDisplay(0);
+    
     document.getElementById("myMeter").innerText = "";
     document.getElementById("oppMeter").innerText = "";
     document.getElementById("myAvDisplay").innerText = myAvatar;
@@ -367,23 +371,21 @@ function initBoard() {
         let c = document.createElement("div");
         c.className = "cell";
         c.innerText = n;
-        c.onclick = () => handleCellClick(n);
+        c.onclick = () => {
+            if(gameOver) return;
+            if(roomRef) {
+                roomRef.once('value').then(snap => {
+                    let d = snap.val();
+                    if(d.turn === role) {
+                        roomRef.update({ lastNum: n, turn: role === 'p1' ? 'p2' : 'p1', reset: false });
+                    }
+                });
+            } else {
+                markNumber(n);
+            }
+        };
         grid.appendChild(c);
     });
-}
-
-function handleCellClick(n) {
-    if(gameOver) return;
-    if(roomRef) {
-        roomRef.once('value', snap => {
-            let d = snap.val();
-            if(d.turn === role) {
-                roomRef.update({ lastNum: n, turn: role === 'p1' ? 'p2' : 'p1', reset: false });
-            }
-        });
-    } else {
-        markNumber(n);
-    }
 }
 
 function markNumber(n) {
@@ -394,35 +396,34 @@ function markNumber(n) {
             c.classList.add("marked");
         }
     });
-    checkBingo();
+    checkBingoProgress();
 }
 
-function checkBingo() {
-    const wins = [[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]];
-    let lines = wins.filter(p => p.every(idx => boardState[idx])).length;
-    updateBingoLetters(lines);
+function checkBingoProgress() {
+    const winPatterns = [[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]];
+    let lines = winPatterns.filter(p => p.every(idx => boardState[idx])).length;
+    updateBingoDisplay(lines);
     
-    let meterText = "BINGO".substring(0, lines);
-    document.getElementById("myMeter").innerText = meterText;
+    document.getElementById("myMeter").innerText = "BINGO".substring(0, lines);
 
     if(roomRef) {
-        roomRef.child("players").child(role).update({ lines: lines, name: myName, avatar: myAvatar });
+        roomRef.child("sync").child(role).update({ lines: lines, name: myName, avatar: myAvatar });
     } else if(lines >= 5) {
-        victory(myName, myAvatar, "YOU WIN!");
+        showVictory(myName, myAvatar, "YOU WIN!");
     }
 }
 
-function updateBingoLetters(count) {
+function updateBingoDisplay(count) {
     for(let i=0; i<5; i++) {
         document.getElementById("L"+i).classList.toggle("active", i < count);
     }
 }
 
-// --- ONLINE MODE ---
+// --- ONLINE LOGIC ---
 function createGame() {
     roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
     document.getElementById("gameCode").value = roomCode;
-    alert("ROOM CREATED! Code: " + roomCode);
+    alert("ROOM CREATED! Code: " + roomCode + "\nShare this with your opponent.");
     joinGame();
 }
 
@@ -432,36 +433,41 @@ function showOnline() {
 }
 
 function joinGame() {
-    let code = document.getElementById("gameCode").value.trim().toUpperCase();
-    if(!code) return alert("Enter Code");
-    roomCode = code;
+    let inputCode = document.getElementById("gameCode").value.trim().toUpperCase();
+    if(!inputCode) return alert("Please enter a room code.");
+    
+    roomCode = inputCode;
     roomRef = db.ref("rooms/" + roomCode);
 
-    roomRef.once("value", snap => {
-        let d = snap.val();
-        if(!d) {
+    roomRef.once("value").then(snap => {
+        let data = snap.val();
+        
+        if(!data) {
             role = "p1";
             roomRef.set({
                 turn: "p1",
                 lastNum: 0,
                 reset: false,
-                players: { p1: { id: playerId, name: myName, avatar: myAvatar, lines: 0 } }
+                players: { p1: playerId },
+                sync: { p1: { name: myName, avatar: myAvatar, lines: 0 } }
             });
-        } else if(!d.players.p2) {
+        } else if(!data.players.p2 && data.players.p1 !== playerId) {
             role = "p2";
-            roomRef.child("players/p2").set({ id: playerId, name: myName, avatar: myAvatar, lines: 0 });
-        } else if(d.players.p1.id === playerId) {
+            roomRef.child("players/p2").set(playerId);
+            roomRef.child("sync/p2").set({ name: myName, avatar: myAvatar, lines: 0 });
+        } else if(data.players.p1 === playerId) {
             role = "p1";
-        } else if(d.players.p2.id === playerId) {
+        } else if(data.players.p2 === playerId) {
             role = "p2";
         } else {
-            return alert("Room Full");
+            alert("Room is full!");
+            return;
         }
-        startMultiplayer();
+        startSocket();
     });
 }
 
-function startMultiplayer() {
+function startSocket() {
     document.getElementById("onlineBox").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
     initBoard();
@@ -472,42 +478,41 @@ function startMultiplayer() {
 
         if(d.reset) { initBoard(); return; }
 
-        // Sync Numbers
-        if(d.lastNum !== lastNumSync && d.lastNum !== 0) {
-            lastNumSync = d.lastNum;
+        // Last Number Sync
+        if(d.lastNum !== 0 && d.lastNum !== lastMoveProcessed) {
+            lastMoveProcessed = d.lastNum;
             markNumber(d.lastNum);
         }
 
-        // Sync Opponent Data
-        let oppRole = role === "p1" ? "p2" : "p1";
-        if(d.players[oppRole]) {
-            let o = d.players[oppRole];
+        // Opponent Sync
+        let opp = role === "p1" ? "p2" : "p1";
+        if(d.sync && d.sync[opp]) {
+            let o = d.sync[opp];
             document.getElementById("oppNameDisplay").innerText = o.name;
             document.getElementById("oppAvDisplay").innerText = o.avatar;
             document.getElementById("oppMeter").innerText = "BINGO".substring(0, o.lines);
             
-            // Check Wins
-            let myLines = d.players[role].lines || 0;
-            let oppLines = o.lines || 0;
+            // Win Logic
+            let myL = d.sync[role].lines || 0;
+            let opL = o.lines || 0;
 
             if(!gameOver) {
-                if(myLines >= 5 && oppLines >= 5) victory("BOTH", "🤝", "TIE!");
-                else if(myLines >= 5) victory(myName, myAvatar, "YOU WIN!");
-                else if(oppLines >= 5) victory(o.name, o.avatar, "OPPONENT WINS!");
+                if(myL >= 5 && opL >= 5) showVictory("BOTH", "🤝", "IT'S A TIE!");
+                else if(myL >= 5) showVictory(myName, myAvatar, "YOU WIN!");
+                else if(opL >= 5) showVictory(o.name, o.avatar, "OPPONENT WINS!");
             }
         }
 
         if(!gameOver) {
-            let isMyTurn = d.turn === role;
-            document.getElementById("status").innerText = isMyTurn ? "YOUR TURN" : "OPPONENT'S TURN";
-            document.getElementById("status").style.color = isMyTurn ? "var(--accent)" : "white";
+            let turnText = (d.turn === role) ? "YOUR TURN" : "OPPONENT'S TURN";
+            document.getElementById("status").innerText = turnText;
+            document.getElementById("status").style.color = (d.turn === role) ? "var(--accent)" : "white";
         }
     });
 }
 
-function victory(name, av, msg) {
+function showVictory(name, av, msg) {
     gameOver = true;
-    playSfx('win');
     document.getElementById("winAv").innerText = av;
     document.getElementById("winName").innerText = name;
     document.getElementById("winMessage").innerText = msg;
@@ -520,8 +525,13 @@ function closeWinModal() {
 }
 
 function resetGame() {
-    if(roomRef) roomRef.update({ reset: true, lastNum: 0, turn: "p1" });
-    else initBoard();
+    if(roomRef) {
+        roomRef.update({ reset: true, lastNum: 0, turn: "p1" });
+        roomRef.child("sync/p1/lines").set(0);
+        roomRef.child("sync/p2/lines").set(0);
+    } else {
+        initBoard();
+    }
 }
 
 function startOffline() {
